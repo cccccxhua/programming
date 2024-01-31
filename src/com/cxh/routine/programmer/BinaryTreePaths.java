@@ -18,27 +18,29 @@ public class BinaryTreePaths {
     }
     public List<String> binaryTreePaths(TreeNode root) {
         List<String> ans = new ArrayList<>();
-        backTracing(root, new StringBuilder(), ans);
+        backTracing(root, new ArrayList<Integer>(), ans);
         return ans;
     }
 
-    public void backTracing(TreeNode root,StringBuilder sb,List<String> list){
-        sb.append(root.val);
+    public void backTracing(TreeNode root,List<Integer> paths,List<String> list){
+        paths.add(root.val);
         if (root.left==null && root.right==null){
+            StringBuilder sb = new StringBuilder();
+            for (int i=0;i<paths.size()-1;i++){
+                sb.append(paths.get(i));
+                sb.append("->");
+            }
+            sb.append(paths.get(paths.size()-1));
             list.add(sb.toString());
             return;
         }
         if (root.left!=null){
-            sb.append("->");
-            backTracing(root.left, sb,list);
-            sb.delete(sb.length()-2,sb.length());
+            backTracing(root.left, paths,list);
+            paths.remove(paths.size()-1);
         }
         if (root.right!=null){
-            sb.append("->");
-            backTracing(root.right, sb, list);
-            sb.delete(sb.length()-2,sb.length());
+            backTracing(root.right, paths, list);
+            paths.remove(paths.size()-1);
         }
-
-
     }
 }
